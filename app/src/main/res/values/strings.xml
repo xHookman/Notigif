@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Notigif</string>
+    <string name="restart_systemui">Restart SystemUI (If needed)</string>
+    <string name="choose_a_gif">Add a gif</string>
+    <string name="top_red_text">Please report on the XDA Page if it work or no for your rom. Please consider a donation if you like all my works it\'s very nice if you do that :), you can find all my works on my XDA page</string>
+    <string name="hide_bottom_carrier_label">Hide carrier label</string>
+    <string name="size">Size : </string>
+    <string name="tap_here_to_show">Tap here to show</string>
+    <string name="donation_thanks">Thanks by advanced if you give me a donation it\'s very nice :) It will support all my free works</string>
+    <string name="right_margin">Right Margin : </string>
+    <string name="top_margin">Top Margin : </string>
+    <string name="left_margin">Left Margin : </string>
+    <string name="bottom_margin">Bottom Margin : </string>
+    <string name="margins">Margins</string>
+    <string name="show_positions_settings">Show Positions Settings</string>
+    <string name="opacity">Opacity :</string>
+    <string name="disable">Disable this gif</string>
+    <string name="fade">Fade with notifs panel</string>
+    <string name="show_on_lock">Show on lockscreen</string>
+
+    <string-array name="dropdown_vertical">
+        <item>Top</item>
+        <item>Bottom</item>
+        <item>Center</item>
+    </string-array>
+    <string-array name="dropdown_horizontal">
+        <item>Left</item>
+        <item>Right</item>
+        <item>Center</item>
+    </string-array>
+    <string-array name="dropdown_plans">
+        <item>In foreground</item>
+        <item>In background</item>
+    </string-array>
+</resources>

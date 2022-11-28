@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/right_margin" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+                <ImageButton
+                    android:layout_weight="15"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/black"
+                    android:onClick="seekbarBtnSub2"
+                    android:src="@drawable/line" />
+
+                <SeekBar
+                    android:id="@+id/seekBarRight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="2"
+                    android:max="1000"
+                    android:progressDrawable="@drawable/seek_bar_ruler"
+                    android:thumb="@drawable/seek_bar_slider" />
+
+                <ImageButton
+                    android:layout_weight="15"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/black"
+                    android:onClick="seekbarBtnAdd2"
+                    android:src="@drawable/cross" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/left_margin" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+                <ImageButton
+                    android:layout_weight="15"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/black"
+                    android:onClick="seekbarBtnSub3"
+                    android:src="@drawable/line" />
+
+                <SeekBar
+                    android:id="@+id/seekBarLeft"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="2"
+                    android:max="1000"
+                    android:progressDrawable="@drawable/seek_bar_ruler"
+                    android:thumb="@drawable/seek_bar_slider" />
+
+                <ImageButton
+                    android:layout_weight="15"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/black"
+                    android:onClick="seekbarBtnAdd3"
+                    android:src="@drawable/cross" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/textViewBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/bottom_margin" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+                <ImageButton
+                    android:layout_weight="15"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/black"
+                    android:onClick="seekbarBtnSub4"
+                    android:src="@drawable/line" />
+
+                <SeekBar
+                    android:id="@+id/seekBarBottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:max="2000"
+                    android:layout_marginTop="5dp"
+                    android:progressDrawable="@drawable/seek_bar_ruler"
+                    android:thumb="@drawable/seek_bar_slider" />
+
+                <ImageButton
+                    android:layout_weight="15"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/black"
+                    android:onClick="seekbarBtnAdd4"
+                    android:src="@drawable/cross" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/top_margin" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+                <ImageButton
+                    android:layout_weight="15"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/black"
+                    android:onClick="seekbarBtnSub5"
+                    android:src="@drawable/line" />
+
+                <SeekBar
+                    android:id="@+id/seekBarTop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:max="2000"
+                    android:layout_marginTop="5dp"
+                    android:progressDrawable="@drawable/seek_bar_ruler"
+                    android:thumb="@drawable/seek_bar_slider" />
+
+                <ImageButton
+                    android:layout_weight="15"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/black"
+                    android:onClick="seekbarBtnAdd5"
+                    android:src="@drawable/cross" />
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Spinner
+                        android:id="@+id/spinner_vertical"
+                        android:spinnerMode="dropdown"
+                        android:layout_weight="1"
+                        android:popupBackground="@drawable/shape"
+                        android:entries="@array/dropdown_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp" />
+
+                <Spinner
+                        android:id="@+id/spinner_horizontal"
+                        android:spinnerMode="dropdown"
+                        android:layout_weight="1"
+                        android:popupBackground="@drawable/shape"
+                        android:entries="@array/dropdown_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp" />
+        </LinearLayout>
+        <Spinner
+            android:id="@+id/spinner_plans"
+            android:spinnerMode="dropdown"
+            android:popupBackground="@drawable/shape"
+            android:entries="@array/dropdown_plans"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+</LinearLayout>
