@@ -57,7 +57,6 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
     SharedPreferences pref;
     SharedPreferences.Editor editor;
-    public final String MY_PACKAGE_NAME = "com.chacha.notigif";
     GridView gridView;
     String[] imagenames;
     ImageView marginLeftArrow, marginRightArrow;
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         pref = Preferences.loadPreferences(this);
-        editor = Preferences.editor;
+        editor = Preferences.getEditor();
 
         checkXposed(this);
         showResourceHooksMsg();
@@ -339,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("ChoosenImagePath"+gifPosition, imagenames[position]);
             editor.putInt("ChoosenImagePos"+gifPosition, position);
             editor.commit();
-            FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+            FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
         });
 
         gridView.setOnItemLongClickListener((adapterView, view, i, l) -> {
@@ -351,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
                         File fileToRemove = new File(imagenames[i]); // path only
                         try {
                             FileUtils.forceDelete(fileToRemove);
-                            FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+                            FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
                             refreshGridView();
                         } catch (IOException e) {
                             Permissions.checkPermission(this);
@@ -386,7 +385,7 @@ public class MainActivity extends AppCompatActivity {
                                 editor.remove("ChoosenImagePath" + pos);
                                 editor.remove("ChoosenImagePos" + pos);
                                 editor.commit();
-                                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+                                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
                                 listGifPos.remove(pos);
 
                                 for(int i=pos; i<gifPosCount; i++){ //Shift all saved values to avoid problems to load them (shift only values superior as the removed position)
@@ -403,7 +402,7 @@ public class MainActivity extends AppCompatActivity {
                                     editor.putString("ChoosenImagePath"+i, pref.getString("ChoosenImagePath"+(i+1), ""));
                                     editor.putInt("ChoosenImagePos"+i, pref.getInt("ChoosenImagePos"+(i+1), -1));
                                     editor.commit();
-                                    FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+                                    FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
                                 }
                                 for(int i=0; i<gifPosCount; i++){ //Refresh the spinner
                                     listGifPos.set(i, "GIF : " + (i+1));
@@ -433,7 +432,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.putInt("size"+gifPosition, progress);
                 textView.setText(getResources().getString(R.string.size) + " " + progress);
                 editor.commit();
-                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
             }
         });
         seekbarTransparency.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -447,32 +446,32 @@ public class MainActivity extends AppCompatActivity {
                 editor.putInt("transparency"+gifPosition, progress);
                 textViewTransparency.setText(getResources().getString(R.string.opacity) + " " + progress);
                 editor.commit();
-                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
             }
         });
 
         switchCarrier.setOnCheckedChangeListener((view, isChecked) -> {
             editor.putBoolean("carrierLabelBoolean", isChecked);
             editor.commit();
-            FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+            FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
         });
 
         switchDisable.setOnCheckedChangeListener((view, isChecked) -> {
             editor.putBoolean("disableBoolean"+gifPosition, isChecked);
             editor.commit();
-            FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+            FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
         });
 
         switchFade.setOnCheckedChangeListener((view, isChecked) -> {
             editor.putBoolean("fade", isChecked);
             editor.commit();
-            FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+            FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
         });
 
         switchLock.setOnCheckedChangeListener((view, isChecked) -> {
             editor.putBoolean("showLock", isChecked);
             editor.commit();
-            FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+            FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
         });
 
         expandMarginsLayout.setOnClickListener(v -> {
@@ -500,7 +499,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.putInt("marginRight"+gifPosition, progress);
                 textViewRight.setText(getResources().getString(R.string.right_margin) + " " + progress);
                 editor.commit();
-                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
             }
 
             @Override
@@ -516,7 +515,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.putInt("marginLeft"+gifPosition, progress);
                 textViewLeft.setText(getResources().getString(R.string.left_margin) +" " + progress);
                 editor.commit();
-                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
             }
 
             @Override
@@ -532,7 +531,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.putInt("marginBottom"+gifPosition, progress);
                 textViewBottom.setText(getResources().getString(R.string.bottom_margin) + " " + progress);
                 editor.commit();
-                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
             }
 
             @Override
@@ -548,7 +547,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.putInt("marginTop"+gifPosition, progress);
                 textViewTop.setText(getResources().getString(R.string.top_margin) + " " + progress);
                 editor.commit();
-                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
             }
 
             @Override
@@ -563,7 +562,7 @@ public class MainActivity extends AppCompatActivity {
            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                editor.putInt("horizontalSpinnerPosition"+gifPosition, position);
                editor.commit();
-               FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+               FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
            }
            @Override
            public void onNothingSelected(AdapterView<?> parent) {}
@@ -574,7 +573,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 editor.putInt("verticalSpinnerPosition"+gifPosition, position);
                 editor.commit();
-                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -585,7 +584,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 editor.putInt("plansSpinnerPosition"+gifPosition, position);
                 editor.commit();
-                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+                FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -597,7 +596,7 @@ public class MainActivity extends AppCompatActivity {
                 if(position==gifPosCount){ //Add a gif page (+)
                     editor.putInt("gifPosCount", ++gifPosCount);
                     editor.commit();
-                    FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+                    FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
                     listGifPos.set(position, "GIF : " + (position+1));
                     listGifPos.add("+");
                     gifNumberSpinner.setAdapter(arrayAdapter);
@@ -628,7 +627,7 @@ public class MainActivity extends AppCompatActivity {
         textView.setOnLongClickListener(view -> {
             editor.putInt("size", 390);
             editor.commit();
-            FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+            FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
             seekBar.setProgress(pref.getInt("size", 390));
             return false;
         });
@@ -730,7 +729,7 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton("NEVER SHOW THIS PLEAAASEE", (dialog, id) -> {
                         editor.putBoolean("showResourceHooks", true);
                         editor.apply();
-                        FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+                        FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
                     });
             AlertDialog alert = builder.create();
             alert.show();
@@ -754,6 +753,6 @@ public class MainActivity extends AppCompatActivity {
             textView.setText(text + " " + progress);
             editor.putInt(pref, progress);
             editor.commit();
-            FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, "user_settings");
+            FileSharedPreferences.makeWorldReadable(MY_PACKAGE_NAME, Utils.PREFERENCES_FILE_NAME);
     }
 }

@@ -1,5 +1,7 @@
 package com.chacha.notigif;
 
+import static com.chacha.notigif.Utils.MY_PACKAGE_NAME;
+
 import android.app.AndroidAppHelper;
 import android.content.Context;
 import android.graphics.Color;
@@ -30,56 +32,30 @@ import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
 public class Module implements IXposedHookInitPackageResources, IXposedHookLoadPackage, IXposedHookZygoteInit {
-    String SYSTEMUI_PACKAGE_NAME = "com.android.systemui";
-    static String MY_PACKAGE_NAME = "com.chacha.notigif";
-    String choosenImagePath;
-    XSharedPreferences pref;
-    int i, gifPosCount;
-    int size, right_margin, left_margin, bottom_margin, top_margin, horizontalSpinnerPosition, verticalSpinnerPosition, plansSpinnerPosition;
-    float transparency;
-    boolean carrierLabelBoolean, disableBoolean, fade, showLock;
-    FrameLayout gifFrameLayout, allGifsLayout;
-    FrameLayout BgLayout;
-    FrameLayout.LayoutParams frameLayoutparms, frameLayoutParams2;
-    ImageView imageview;
-    Context ctx;
-
-    public void prefLoad(){
-        if(XposedBridge.getXposedVersion() < 93) {
-            pref = getLegacyPrefs();
-        } else {
-            pref = getPref();
-        }
-
-        if(pref!=null) {
-            pref.reload();
-        } else {
-            XposedBridge.log("Can't load preference in the module");
-        }
-    }
+    private String SYSTEMUI_PACKAGE_NAME = "com.android.systemui";
+    private String choosenImagePath;
+    private int i, gifPosCount;
+    private int size, right_margin, left_margin, bottom_margin, top_margin, horizontalSpinnerPosition, verticalSpinnerPosition, plansSpinnerPosition;
+    private float transparency;
+    private boolean carrierLabelBoolean, disableBoolean, fade, showLock;
+    private FrameLayout gifFrameLayout, allGifsLayout;
+    private FrameLayout BgLayout;
+    private FrameLayout.LayoutParams frameLayoutparms, frameLayoutParams2;
+    private ImageView imageview;
+    private Context ctx;
 
     @Override
     public void initZygote(StartupParam startupParam) {
-        prefLoad();
-    }
-
-    public static XSharedPreferences getPref() {
-        XSharedPreferences pref = new XSharedPreferences(MY_PACKAGE_NAME, "user_settings");
-        return pref.getFile().canRead() ? pref : null;
-    }
-
-    private XSharedPreferences getLegacyPrefs() {
-        File f = new File(Environment.getDataDirectory(), "data/" + MY_PACKAGE_NAME + "/shared_prefs/user_settings.xml");
-        return new XSharedPreferences(f);
+        XposedPreferences.loadPreferences();
     }
 
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) {
-            prefLoad();
-            pref.reload();
+        XposedPreferences.loadPreferences();
+        XposedPreferences.reloadPrefs();
 
-        fade=pref.getBoolean("fade", true);
-        showLock=pref.getBoolean("showLock", true);
+        fade=XposedPreferences.getPrefs().getBoolean("fade", true);
+        showLock=XposedPreferences.getPrefs().getBoolean("showLock", true);
 
         if (lpparam.packageName.equals(MY_PACKAGE_NAME)) {
             findAndHookMethod(MY_PACKAGE_NAME + ".Utils", lpparam.classLoader,
@@ -95,11 +71,11 @@ public class Module implements IXposedHookInitPackageResources, IXposedHookLoadP
                             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                                 super.beforeHookedMethod(param);
                                 boolean mKeyguardShowing = XposedHelpers.getBooleanField(param.thisObject, "mKeyguardShowing");
-                                if (pref.hasFileChanged()) {
-                                    prefLoad();
-                                    gifPosCount = pref.getInt("gifPosCount", 1);
-                                    fade = pref.getBoolean("fade", true);
-                                    showLock = pref.getBoolean("showLock", true);
+                                if (XposedPreferences.hasPrefsChanged()) {
+                                    XposedPreferences.loadPreferences();
+                                    gifPosCount = XposedPreferences.getPrefs().getInt("gifPosCount", 1);
+                                    fade = XposedPreferences.getPrefs().getBoolean("fade", true);
+                                    showLock = XposedPreferences.getPrefs().getBoolean("showLock", true);
                                     allGifsLayout.removeAllViews();
                                     for (i = 0; i < gifPosCount; i++) {
                                         prefs(i);
@@ -127,11 +103,11 @@ public class Module implements IXposedHookInitPackageResources, IXposedHookLoadP
                             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                                 super.beforeHookedMethod(param);
                                 boolean mKeyguardShowing = XposedHelpers.getBooleanField(param.thisObject, "mKeyguardShowing");
-                                if (pref.hasFileChanged()) {
-                                    prefLoad();
-                                    gifPosCount = pref.getInt("gifPosCount", 1);
-                                    fade = pref.getBoolean("fade", true);
-                                    showLock = pref.getBoolean("showLock", true);
+                                if (XposedPreferences.hasPrefsChanged()) {
+                                    XposedPreferences.loadPreferences();
+                                    gifPosCount = XposedPreferences.getPrefs().getInt("gifPosCount", 1);
+                                    fade = XposedPreferences.getPrefs().getBoolean("fade", true);
+                                    showLock = XposedPreferences.getPrefs().getBoolean("showLock", true);
                                     allGifsLayout.removeAllViews();
                                     for (i = 0; i < gifPosCount; i++) {
                                         prefs(i);
@@ -169,19 +145,19 @@ public class Module implements IXposedHookInitPackageResources, IXposedHookLoadP
                 }
             }
 
-    public void prefs(int gifposition){
-        size = pref.getInt("size"+gifposition, 390);
-        transparency = pref.getInt("transparency"+gifposition, 100);
-        right_margin = pref.getInt("marginRight"+gifposition, 0);
-        left_margin = pref.getInt("marginLeft"+gifposition, 0);
-        bottom_margin = pref.getInt("marginBottom"+gifposition, 0);
-        top_margin = pref.getInt("marginTop"+gifposition, 0);
-        horizontalSpinnerPosition = pref.getInt("horizontalSpinnerPosition"+gifposition, 2);
-        verticalSpinnerPosition = pref.getInt("verticalSpinnerPosition"+gifposition, 1);
-        plansSpinnerPosition = pref.getInt("plansSpinnerPosition"+gifposition, 0);
-        disableBoolean = pref.getBoolean("disableBoolean"+gifposition, false);
-        carrierLabelBoolean = pref.getBoolean("carrierLabelBoolean", false);
-        choosenImagePath = pref.getString("ChoosenImagePath"+gifposition, "");
+    private void prefs(int gifposition){
+        size = XposedPreferences.getPrefs().getInt("size"+gifposition, 390);
+        transparency = XposedPreferences.getPrefs().getInt("transparency"+gifposition, 100);
+        right_margin = XposedPreferences.getPrefs().getInt("marginRight"+gifposition, 0);
+        left_margin = XposedPreferences.getPrefs().getInt("marginLeft"+gifposition, 0);
+        bottom_margin = XposedPreferences.getPrefs().getInt("marginBottom"+gifposition, 0);
+        top_margin = XposedPreferences.getPrefs().getInt("marginTop"+gifposition, 0);
+        horizontalSpinnerPosition = XposedPreferences.getPrefs().getInt("horizontalSpinnerPosition"+gifposition, 2);
+        verticalSpinnerPosition = XposedPreferences.getPrefs().getInt("verticalSpinnerPosition"+gifposition, 1);
+        plansSpinnerPosition = XposedPreferences.getPrefs().getInt("plansSpinnerPosition"+gifposition, 0);
+        disableBoolean = XposedPreferences.getPrefs().getBoolean("disableBoolean"+gifposition, false);
+        carrierLabelBoolean = XposedPreferences.getPrefs().getBoolean("carrierLabelBoolean", false);
+        choosenImagePath = XposedPreferences.getPrefs().getString("ChoosenImagePath"+gifposition, "");
     }
 
     @Override
@@ -191,7 +167,7 @@ public class Module implements IXposedHookInitPackageResources, IXposedHookLoadP
             resparam.res.hookLayout(SYSTEMUI_PACKAGE_NAME, "layout", "status_bar_expanded", new XC_LayoutInflated() {
                 @Override
                 public void handleLayoutInflated(LayoutInflatedParam liparam) {
-                    gifPosCount = pref.getInt("gifPosCount", 1);
+                    gifPosCount = XposedPreferences.getPrefs().getInt("gifPosCount", 1);
                     BgLayout = liparam.view.findViewById(liparam.res.getIdentifier("notification_panel", "id", SYSTEMUI_PACKAGE_NAME));
                     for (i = 0; i < gifPosCount; i++) {
                         prefs(i);
@@ -229,7 +205,8 @@ public class Module implements IXposedHookInitPackageResources, IXposedHookLoadP
                 }
             });
     }
-    public void refreshImage(Context ctx){
+
+    private void refreshImage(Context ctx){
         imageview = new ImageView(ctx);
         gifFrameLayout = new FrameLayout(ctx);
 

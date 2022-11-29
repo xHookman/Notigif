@@ -9,11 +9,14 @@ import java.io.DataOutputStream;
 import eu.chainfire.libsuperuser.Shell;
 
 public class Utils {
+    public static final String MY_PACKAGE_NAME = "com.chacha.notigif";
+    public static final String PREFERENCES_FILE_NAME = "user_settings";
+
     private static boolean isModuleActive(){
         return false;
     }
 
-    protected static void checkXposed(Context context) {
+    public static void checkXposed(Context context) {
         if (!isModuleActive()) {
             AlertDialog alertDialog = new AlertDialog.Builder(context, 4).create();
             alertDialog.setTitle("Alert");
@@ -24,7 +27,7 @@ public class Utils {
         }
     }
 
-    protected static void unrooted(Context context) {
+    public static void unrooted(Context context) {
         final AlertDialog alertDialog = new AlertDialog.Builder(context, 4).create();
         alertDialog.setTitle("Pleeeeaseee read !");
         alertDialog.setMessage("You must grant root permission to kill SystemUI to update the icon ;)");
@@ -33,7 +36,7 @@ public class Utils {
         alertDialog.show();
     }
 
-    protected static void killSystemUi(Context context) {
+    public static void killSystemUi(Context context) {
         if (Shell.SU.available()) {
             try {
                 Process su = Runtime.getRuntime().exec("su");

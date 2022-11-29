@@ -1,7 +1,5 @@
 package com.chacha.notigif;
 
-import static com.chacha.notigif.Preferences.editor;
-
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
@@ -22,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class GifUtil {
-    protected static void downloadGif(String mediaID, Context ctx, MainActivity mainActivity) {
+    public static void downloadGif(String mediaID, Context ctx, MainActivity mainActivity) {
         String url = "https://media.giphy.com/media/" + mediaID + "/giphy.gif";
         String fileName = mediaID + ".gif";
         DownloadManager downloadmanager = (DownloadManager) ctx.getSystemService(Context.DOWNLOAD_SERVICE);
@@ -43,9 +41,9 @@ public class GifUtil {
                     FileUtils.moveFileToDirectory(src, Files.dir, false);
                     Toast.makeText(context, "Downloaded !", Toast.LENGTH_SHORT).show();
                     mainActivity.gridViewSelectedItemPosition++;
-                    editor.putInt("ChoosenImagePos"+mainActivity.gifPosition, mainActivity.gridViewSelectedItemPosition);
-                    editor.commit();
-                    FileSharedPreferences.makeWorldReadable(context.getPackageName(), "user_settings");
+                    Preferences.getEditor().putInt("ChoosenImagePos"+mainActivity.gifPosition, mainActivity.gridViewSelectedItemPosition);
+                    Preferences.getEditor().commit();
+                    FileSharedPreferences.makeWorldReadable(context.getPackageName(), Utils.PREFERENCES_FILE_NAME);
                     mainActivity.refreshGridView();
                 } catch (IOException ignored) {}
             }
@@ -53,22 +51,22 @@ public class GifUtil {
         ctx.registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
-    protected static void showMobileDataWarning(String mediaID, Context ctx, MainActivity mainActivity) {
+    public static void showMobileDataWarning(String mediaID, Context ctx, MainActivity mainActivity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx, 4);
         builder.setMessage("Paid attention, if you choose to download this gif it will use your mobile data (it may cause costs) ! ")
                 .setNegativeButton("Do not download !", (dialog, id) -> {
                 })
                 .setPositiveButton("Never show & download", (dialog, id) -> {
-                    editor.putBoolean("showMobileDataWarning", false);
-                    editor.apply();
-                    FileSharedPreferences.makeWorldReadable(ctx.getPackageName(), "user_settings");
+                    Preferences.getEditor().putBoolean("showMobileDataWarning", false);
+                    Preferences.getEditor().apply();
+                    FileSharedPreferences.makeWorldReadable(ctx.getPackageName(), Utils.PREFERENCES_FILE_NAME);
                     GifUtil.downloadGif(mediaID, ctx, mainActivity);
                 });
         AlertDialog alert = builder.create();
         alert.show();
     }
 
-    protected static boolean isWifiEnabled(Context ctx) {
+    public static boolean isWifiEnabled(Context ctx) {
         ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
         return (ni != null && ni.getType() == ConnectivityManager.TYPE_WIFI);
